@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kishan – Game Developer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Outfit:wght@300;400;600&display=swap">
+<style>
+/* ===== EDIT ME: colors ===== */
+:root{
+  --bg:#241838; --panel:#33224d; --ink:#f3ecff; --muted:#b9a9d6;
+  --peach:#ffb38a; --teal:#4fd1c5; --line:#4a3769;
+  --pix:'Silkscreen','Courier New',monospace; --body:'Outfit',system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f6f0ff;--panel:#ffffff;--ink:#2a1b44;--muted:#6a5a88;--peach:#d9622b;--teal:#0f8f84;--line:#d9ccf0}}
+:root[data-theme="light"]{--bg:#f6f0ff;--panel:#ffffff;--ink:#2a1b44;--muted:#6a5a88;--peach:#d9622b;--teal:#0f8f84;--line:#d9ccf0}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:300 18px/1.65 var(--body)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.wrap{max-width:980px;margin:0 auto;padding:0 24px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;font-family:var(--pix);font-size:15px}
+nav a{text-decoration:none;margin-left:20px;color:var(--muted)}
+nav a:hover{color:var(--peach)}
+nav b{color:var(--peach)}
+
+/* hero */
+.hero{padding:36px 0 0}
+h1{font-family:var(--pix);font-weight:700;font-size:clamp(38px,8vw,84px);line-height:1;margin:0 0 18px;letter-spacing:-1px}
+.lead{max-width:560px;color:var(--muted);font-size:20px;margin:0 0 28px}
+.btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:34px}
+.btn{font-family:var(--pix);font-size:15px;text-decoration:none;padding:12px 20px;background:var(--peach);color:#241838;border:3px solid var(--peach);box-shadow:4px 4px 0 var(--teal);transition:transform .1s,box-shadow .1s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--teal)}
+.btn.alt{background:transparent;color:var(--ink);border-color:var(--line);box-shadow:4px 4px 0 var(--line)}
+.stage{position:relative;border:3px solid var(--line);background:var(--panel);image-rendering:pixelated}
+canvas{display:block;width:100%;height:auto}
+.hud{position:absolute;top:10px;left:14px;font-family:var(--pix);font-size:14px;color:var(--peach)}
+.hint{position:absolute;bottom:8px;right:14px;font-family:var(--pix);font-size:12px;color:var(--muted)}
+
+section{padding:84px 0 0}
+h2{font-family:var(--pix);font-size:clamp(26px,4vw,38px);margin:0 0 28px}
+p{margin:0 0 16px;max-width:620px}
+
+/* level select */
+.levels{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+.level{background:var(--panel);border:3px solid var(--line);display:flex;flex-direction:column}
+.level:hover{border-color:var(--teal)}
+.shot{height:150px;display:grid;place-items:center;font-family:var(--pix);font-size:44px;color:#241838;border-bottom:3px solid var(--line)}
+.body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.body h3{font-family:var(--pix);font-size:20px;margin:0}
+.body p{font-size:16px;color:var(--muted);margin:0}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.tag{font-size:13px;padding:2px 10px;border:2px solid var(--line);color:var(--muted)}
+.links{display:flex;gap:16px;font-family:var(--pix);font-size:14px}
+.links a{color:var(--teal)}
+.status{font-family:var(--pix);font-size:12px;color:var(--peach)}
+
+/* inventory */
+.inv{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.slot{border:3px solid var(--line);background:var(--panel);padding:14px;font-family:var(--pix);font-size:15px}
+.slot small{display:block;font:300 14px var(--body);color:var(--muted);margin-top:4px}
+
+.bar{height:14px;margin-top:12px;border:3px solid var(--line);background:var(--bg)}
+.bar i{display:block;height:100%;background:var(--teal);background-image:repeating-linear-gradient(90deg,transparent 0 6px,var(--panel) 6px 8px)}
+.pct{display:block;margin-top:6px;font-size:12px;color:var(--peach)}
+footer{padding:90px 0 60px}
+.big{font-family:var(--pix);font-size:clamp(22px,4vw,34px);word-break:break-word}
+.big a{color:var(--peach)}
+.socials{display:flex;gap:20px;margin-top:16px;font-family:var(--pix);font-size:15px;flex-wrap:wrap}
+.socials a{color:var(--muted)}
+.socials a:hover{color:var(--teal)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav aria-label="Main"><b>villan.dev</b><span><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#contact">Contact</a></span></nav>
+
+  <header class="hero">
+    <h1>Hi, I make<br>games.</h1>
+    <p class="lead">I'm Kishan, a game developer who loves tight controls, small clever mechanics and worlds you want to poke at. Currently building in Unity.</p>
+    <div class="btns"><a class="btn" href="#projects">Play my projects</a><a class="btn alt" href="#contact">Hire me</a></div>
+    <div class="stage">
+      <canvas id="game" width="480" height="150" aria-label="Small jumping game: press space or tap to jump and collect coins"></canvas>
+      <div class="hud" id="score">Coins: 0</div>
+      <div class="hint">Space / tap to jump</div>
+    </div>
+  </header>
+
+  <section id="projects">
+    <h2>Pick a level</h2>
+    <div class="levels" id="levels"></div>
+  </section>
+
+  <section id="skills">
+    <h2>Inventory</h2>
+    <div class="inv" id="inv"></div>
+  </section>
+
+  <section id="about">
+    <h2>About me</h2>
+    <p>I started with small jam games and fell for the loop of build, playtest, fix. I spend most of my time learning new systems: character controllers, AI, shaders and level design.</p>
+    <p>I'm looking for internships, jams to join and teams who ship.</p>
+  </section>
+
+  <footer id="contact">
+    <h2>Player 2 wanted</h2>
+    <div class="big"><a href="mailto:you@example.com">you@example.com</a></div>
+    <div class="socials">
+      <a href="https://github.com/villan404">GitHub</a><a href="https://www.linkedin.com/in/kishankumar0204">LinkedIn</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* ===== EDIT ME: your projects ===== */
+const PROJECTS = [
+  {title:"Moonlit Dash", icon:"1", color:"#ffb38a", status:"Released", desc:"A one-button runner about a fox chasing the moon. Made in 72 hours for a game jam.", tags:["Unity","C#","Game jam"], play:"", code:"https://github.com/villan404"},
+  {title:"Tiny Dungeon", icon:"2", color:"#4fd1c5", status:"In development", desc:"A turn-based roguelike with procedural rooms and a deck of ability cards.", tags:["Unity","C#","Procedural"], play:"", code:"https://github.com/villan404"},
+  {title:"Gravity Garden", icon:"3", color:"#c9a7ff", status:"Prototype", desc:"A puzzle platformer where you flip gravity to grow plants across floating islands.", tags:["Unity","Shaders","Puzzle"], play:"", code:"https://github.com/villan404"}
+];
+/* ===== EDIT ME: your skills ===== */
+const SKILLS = [["C#","Unity scripting",70],["Unity","2D and 3D",65],["C","Fundamentals",60],["Python","Scripting",65],["HTML","Structure",80],["CSS","Styling",75],["JavaScript","Web and logic",60],["Git","Version control",55]];
+
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+document.getElementById('levels').innerHTML = PROJECTS.map(p => `
+  <article class="level">
+    <div class="shot" style="background:${p.color}" aria-hidden="true">${p.icon}</div>
+    <div class="body">
+      <span class="status">${esc(p.status)}</span>
+      <h3>${esc(p.title)}</h3>
+      <p>${esc(p.desc)}</p>
+      <div class="tags">${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+      <div class="links">${p.play?`<a href="${p.play}">Play</a>`:''}${p.code?`<a href="${p.code}">Code</a>`:''}</div>
+    </div>
+  </article>`).join('');
+document.getElementById('inv').innerHTML = SKILLS.map(s => `<div class="slot">${esc(s[0])}<small>${esc(s[1])}</small><div class="bar" role="img" aria-label="${esc(s[0])} skill level ${s[2]} percent"><i style="width:${s[2]}%"></i></div><span class="pct">${s[2]}%</span></div>`).join('');
+
+/* ===== hero mini-game ===== */
+(function(){
+  const cv = document.getElementById('game'), cx = cv.getContext('2d'), out = document.getElementById('score');
+  const W = 480, H = 150, G = 118, S = 4;
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let y = G - 24, vy = 0, score = 0, t = 0, items = [], spikes = [];
+  const hero = ["..1111..",".122221.","12222221","12622621","12222221",".122221.",".1.11.1.","11....11"];
+  function jump(){ if (y >= G - 24) vy = -9.5; }
+  addEventListener('keydown', e => { if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); jump(); } });
+  cv.addEventListener('pointerdown', jump);
+  function spawn(){
+    if (Math.random() < .55) items.push({x: W + 20, y: G - 70 - Math.random() * 20});
+    else spikes.push({x: W + 20});
+  }
+  function draw(){
+    cx.clearRect(0,0,W,H);
+    const peach = css('--peach'), teal = css('--teal'), line = css('--line'), ink = css('--ink');
+    cx.fillStyle = line;
+    for (let i = 0; i < 14; i++) cx.fillRect((i * 97 - t * .3) % W + (i * 97 - t * .3 < 0 ? W : 0), 14 + (i * 31) % 60, 3, 3);
+    cx.fillRect(0, G, W, 3);
+    cx.fillStyle = teal;
+    for (let x = -(t % 24); x < W; x += 24) cx.fillRect(x, G + 8, 12, 4);
+    hero.forEach((r, j) => [...r].forEach((c, i) => {
+      if (c === '.') return;
+      cx.fillStyle = c === '1' ? ink : c === '2' ? peach : '#241838';
+      cx.fillRect(40 + i * S, y + j * S - 8, S, S);
+    }));
+    items.forEach(c => { cx.fillStyle = peach; cx.fillRect(c.x, c.y, 12, 12); cx.fillStyle = ink; cx.fillRect(c.x + 4, c.y + 3, 4, 6); });
+    spikes.forEach(s => { cx.fillStyle = ink; for (let k = 0; k < 3; k++) { cx.beginPath(); cx.moveTo(s.x + k * 10, G); cx.lineTo(s.x + k * 10 + 5, G - 14); cx.lineTo(s.x + k * 10 + 10, G); cx.fill(); } });
+  }
+  function step(){
+    t += 3; vy += .55; y = Math.min(G - 24, y + vy);
+    if (y >= G - 24) vy = 0;
+    if (t % 70 === 0) spawn();
+    items.forEach(c => c.x -= 3); spikes.forEach(s => s.x -= 3);
+    items = items.filter(c => {
+      if (c.x < 70 && c.x > 36 && Math.abs(c.y - (y + 6)) < 22) { score++; out.textContent = 'Coins: ' + score; return false; }
+      return c.x > -20;
+    });
+    spikes = spikes.filter(s => {
+      if (s.x < 68 && s.x > 24 && y > G - 40) { score = 0; out.textContent = 'Coins: 0'; return false; }
+      return s.x > -40;
+    });
+    draw();
+    requestAnimationFrame(step);
+  }
+  draw();
+  if (!still) requestAnimationFrame(step);
+})();
+</script>
+</body>
+</html>
